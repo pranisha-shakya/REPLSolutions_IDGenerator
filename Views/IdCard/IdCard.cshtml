@@ -9,8 +9,8 @@
 <div class="card">
     <div class="card-body">
         <h4>@Model.Student.FirstName @Model.Student.LastName</h4>
-        <p><strong>Class:</strong> @Model.Student.Admissions.FirstOrDefault()?.Class?.Name ?? "N/A"</p>
-        <p><strong>Roll No:</strong> @Model.Student.Admissions.FirstOrDefault()?.RollNumber ?? "N/A"</p>
+        <p><strong>Class:</strong> @(Model.Student.Admissions.FirstOrDefault()?.Class?.Name ?? "N/A")</p>
+        <p><strong>Roll No:</strong> @(Model.Student.Admissions.FirstOrDefault()?.RollNumber ?? "N/A")</p>
         <p><strong>Date of Birth:</strong> @Model.Student.DateOfBirth.ToString("yyyy-MM-dd")</p>
 
         <h5>ID Card Preview:</h5>

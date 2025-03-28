@@ -8,7 +8,7 @@ using SkiaSharp;
 
 public class IdCardService : IIdCardService
 {
-    public byte[] GenerateIdCard(Student student)
+    public byte[] GenerateIdCard(Student student, School school)
     {
         return Document.Create(container =>
         {
@@ -26,7 +26,7 @@ public class IdCardService : IIdCardService
                     {
                         // Header - School Name
                         col.Item().AlignCenter()
-                            .Text("REPL Academy")
+                            .Text(school.Name)
                             .Style(TextStyle.Default.Size(16).Bold().FontColor(Colors.Blue.Darken3));
 
                         // Student Image
@@ -59,7 +59,6 @@ public class IdCardService : IIdCardService
                                 innerCol.Item().Text($"ID: {student.Id}");
                                 innerCol.Item().Text($"Roll No: {student.Admissions.FirstOrDefault()?.RollNumber ?? "N/A"}");
                                 innerCol.Item().Text($"Class: {student.Admissions.FirstOrDefault()?.Class.Name ?? "N/A"}");
-                                innerCol.Item().Text($"Section: {student.Admissions.FirstOrDefault()?.Classroom?.Section.Name ?? "N/A"}");
                                 innerCol.Item().Text($"DOB: {student.DateOfBirth:dd MMM yyyy}");
                                 innerCol.Item().Text($"Guardian: {student.Guardians.FirstOrDefault()?.Name ?? "N/A"}");
                                 innerCol.Item().Text($"Contact: {student.Guardians.FirstOrDefault()?.Phone ?? "N/A"}");
@@ -75,7 +74,7 @@ public class IdCardService : IIdCardService
                     });
                 page.Footer()
                 .AlignCenter()
-                .Text("This ID is property of REPL Academy. If found, please return.")
+                .Text($"This ID is property of {school.Name}. If found, please return.")
                 .Italic()
                 .FontSize(8);
             });
@@ -86,7 +85,7 @@ public class IdCardService : IIdCardService
     {
         // Generate QR code
         var qr = QrCode.EncodeText(data, QrCode.Ecc.Medium);
-        int scale = 10; // Scale factor for the image
+        int scale = 10;
 
         int size = qr.Size * scale;
         using var bitmap = new SKBitmap(size, size);
