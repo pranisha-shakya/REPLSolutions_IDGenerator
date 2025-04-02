@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using REPLSolutions_IDGenerator.Data;
 using REPLSolutions_IDGenerator.Models.ViewModels;
 using REPLSolutions_IDGenerator.Services;
@@ -20,13 +19,7 @@ public class IdCardController : Controller
         if (studentId == null)
             return RedirectToAction("SelectStudent");
 
-        var student = _context.Students
-       .Include(s => s.Admissions)
-           .ThenInclude(a => a.Class)
-       .Include(s => s.Admissions)
-           .ThenInclude(a => a.Classroom)
-       .Include(s => s.Guardians)
-       .FirstOrDefault(s => s.Id == studentId);
+        var student = _context.Students.FirstOrDefault(s => s.Id == studentId);
 
         if (student == null)
             return NotFound("Student not found.");
@@ -65,9 +58,7 @@ public class IdCardController : Controller
 
     public IActionResult SelectStudent()
     {
-        var students = _context.Students
-        .Include(s => s.Admissions)
-        .ThenInclude(a => a.Class).ToList();
+        var students = _context.Students.ToList();
         return View(students);
     }
 }
