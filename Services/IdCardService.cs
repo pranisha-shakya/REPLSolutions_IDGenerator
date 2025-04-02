@@ -27,12 +27,22 @@ public class IdCardService : IIdCardService
 
                     headerCol.Item().Background(blueColor).PaddingVertical(2).Row(row =>
                     {
-                        row.AutoItem().Height(35).PaddingLeft(40).Image("wwwroot/images/logo.png").FitArea();
+                        row.AutoItem().Height(35).PaddingLeft(4).Image("wwwroot/images/logo.png").FitArea();
 
-                        row.AutoItem().AlignMiddle().Column(column =>
+                        row.RelativeItem().AlignMiddle().Column(column =>
                         {
-                            column.Item().Text(school.Name).FontSize(12).Bold().FontColor(Colors.White).AlignCenter();
-                            column.Item().Text(school.Address).FontSize(8).FontColor(Colors.White).AlignCenter();
+                            column.Item().Text(school.Name)
+                                .FontSize(12)
+                                .Bold()
+                                .FontColor(Colors.White)
+                                .AlignCenter()
+                                .WrapAnywhere();
+
+                            column.Item().Text(school.Address)
+                                .FontSize(8)
+                                .FontColor(Colors.White)
+                                .AlignCenter()
+                                .WrapAnywhere();
                         });
                     });
                 });
@@ -73,7 +83,7 @@ public class IdCardService : IIdCardService
                         col.Item().AlignCenter().Row(row =>
                         {
                             row.RelativeItem().AlignMiddle().Height(2).Background(tealColor);
-                            row.ConstantItem(45).Padding(5).Svg(GenerateQrCode(
+                            row.ConstantItem(50).Padding(1).Svg(GenerateQrCode(
                                 $"Name: {student.FirstName ?? "N/A"} {student.LastName ?? "N/A"}, " +
                                 $"Phone: {student.Guardians.FirstOrDefault()?.Phone ?? "N/A"}, " +
                                 $"Address: {student.Guardians.FirstOrDefault()?.Address ?? "N/A"}, " +
@@ -82,7 +92,7 @@ public class IdCardService : IIdCardService
                             row.RelativeItem().AlignMiddle().Height(2).Background(tealColor);
                         });
 
-                        col.Item().PaddingVertical(5).PaddingHorizontal(30).AlignCenter().Table(table =>
+                        col.Item().PaddingVertical(2).PaddingHorizontal(30).AlignCenter().Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -129,6 +139,8 @@ public class IdCardService : IIdCardService
                     });
             });
         }).GeneratePdf();
+
+
     }
 
     private DateTimeOffset? CalculateCardValidityDate(DateTimeOffset? admissionDate)
