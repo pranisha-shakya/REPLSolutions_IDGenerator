@@ -1,6 +1,7 @@
 ﻿using Net.Codecrete.QrCodeGenerator;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using REPLSolutions_IDGenerator.Models;
 using REPLSolutions_IDGenerator.Services;
 
@@ -18,46 +19,53 @@ public class IdCardService : IIdCardService
         {
             container.Page(page =>
             {
-                page.Size(PageSizes.A7.Portrait());
+                page.Size(55, 86, Unit.Millimetre);
                 page.Margin(0);
-                page.DefaultTextStyle(x => x.FontSize(10));
+                page.DefaultTextStyle(x => x.FontSize(8));
 
                 page.Header().Column(headerCol =>
                 {
 
-                    headerCol.Item().Background(blueColor).PaddingVertical(2).Row(row =>
+                    headerCol.Item().Background(blueColor).Row(row =>
                     {
                         row.AutoItem().Height(35).PaddingLeft(4).Image("wwwroot/images/logo.png").FitArea();
 
                         row.RelativeItem().AlignMiddle().Column(column =>
                         {
                             column.Item().Text(school.Name)
-                                .FontSize(12)
+                                .FontSize(10)
                                 .Bold()
                                 .FontColor(Colors.White)
-                                .AlignCenter()
-                                .WrapAnywhere();
+                                .AlignCenter();
 
                             column.Item().Text(school.Address)
                                 .FontSize(8)
                                 .FontColor(Colors.White)
-                                .AlignCenter()
-                                .WrapAnywhere();
+                                .AlignCenter();
                         });
                     });
                 });
 
                 page.Content()
                     .PaddingHorizontal(10)
+                    .PaddingVertical(3)
                     .Column(col =>
                     {
-                        col.Item().AlignCenter().Padding(5).Column(photoCol =>
+                        col.Item().AlignCenter().Background(blueColor).Padding(2).Element(container =>
                         {
-                            photoCol.Item().AlignCenter().Element(container =>
+                            container.AlignCenter().Text("STUDENT ID CARD")
+                                .FontSize(8)
+                                .Bold()
+                                .FontColor(Colors.White);
+                        });
+
+                        col.Item().AlignCenter().Padding(2).Row(row =>
+                        {
+                            row.AutoItem().AlignMiddle().Element(container =>
                             {
                                 if (student.Image != null)
                                 {
-                                    container.Width(70).Height(70)
+                                    container.Width(65).Height(65)
                                         .AlignCenter()
                                         .Border(2)
                                         .BorderColor(Colors.White)
@@ -66,7 +74,7 @@ public class IdCardService : IIdCardService
                                 }
                                 else
                                 {
-                                    container.Width(70).Height(70)
+                                    container.Width(65).Height(65)
                                         .Border(2)
                                         .BorderColor(Colors.White)
                                         .Background(Colors.Grey.Lighten3)
@@ -75,30 +83,30 @@ public class IdCardService : IIdCardService
                                         .Text("Photo");
                                 }
                             });
-                        });
 
-                        col.Item().AlignCenter().Text(student.FirstName + " " + student.LastName)
-                            .FontSize(14).Bold().FontColor(Colors.Black);
-
-                        col.Item().AlignCenter().Row(row =>
-                        {
-                            row.RelativeItem().AlignMiddle().Height(2).Background(tealColor);
-                            row.ConstantItem(50).Padding(1).Svg(GenerateQrCode(
+                            row.AutoItem().AlignMiddle().Width(50).Height(50).Svg(GenerateQrCode(
                                 $"Name: {student.FirstName ?? "N/A"} {student.LastName ?? "N/A"}, " +
                                 $"Phone: {student.Guardians.FirstOrDefault()?.Phone ?? "N/A"}, " +
                                 $"Address: {student.Guardians.FirstOrDefault()?.Address ?? "N/A"}, " +
                                 $"Blood Group: {"N/A"}"
                             ));
-                            row.RelativeItem().AlignMiddle().Height(2).Background(tealColor);
                         });
 
-                        col.Item().PaddingVertical(2).PaddingHorizontal(30).AlignCenter().Table(table =>
+                        col.Item().AlignCenter().Row(row =>
+                        {
+                            row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
+                            row.ConstantItem(75).AlignCenter().Text(student.FirstName + " " + student.LastName)
+                            .FontSize(10).Bold().FontColor(Colors.Black);
+                            row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
+                        });
+
+                        col.Item().PaddingVertical(6).PaddingHorizontal(6).AlignCenter().Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.RelativeColumn(6);
-                                columns.ConstantColumn(12);
-                                columns.RelativeColumn(6);
+                                columns.RelativeColumn(5);
+                                columns.ConstantColumn(10);
+                                columns.RelativeColumn(5);
                             });
 
                             table.Cell().Text("Roll No").Bold();
@@ -131,11 +139,11 @@ public class IdCardService : IIdCardService
                         });
                     });
 
-                page.Footer().Background(blueColor).Padding(5).AlignCenter()
+                page.Footer().Background(blueColor).Padding(3).AlignCenter()
                     .Text(text =>
                     {
                         text.Span($"OUR {school.Name}, OUR PRIDE")
-                            .FontColor(Colors.White).FontSize(8).Italic();
+                            .FontColor(Colors.White).FontSize(7).Italic();
                     });
             });
         }).GeneratePdf();
