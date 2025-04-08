@@ -4,30 +4,80 @@
     ViewData["Title"] = "Select Student";
 }
 
-<h2>Select a Student</h2>
+<div class="container">
+    <h2>Select a Student for ID Card Generation</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Id</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model)
-        {
+    <div class="mb-4">
+        <h4>Select Design Template:</h4>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="designTemplate" id="defaultDesign" value="default" checked>
+            <label class="form-check-label" for="defaultDesign">
+                Default Design
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="designTemplate" id="template2" value="template2">
+            <label class="form-check-label" for="template2">
+                Template 2
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="designTemplate" id="template3" value="template3">
+            <label class="form-check-label" for="template3">
+                Template 3
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="designTemplate" id="template4" value="template4">
+            <label class="form-check-label" for="template4">
+                Template 4
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="designTemplate" id="template5" value="template5">
+            <label class="form-check-label" for="template5">
+                Template 5
+            </label>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@student.FirstName @student.LastName</td>
-                <td>@(student.Admissions?.FirstOrDefault()?.Class?.Name ?? "N/A")</td>
-                <td>@student.Id</td>
-                <td>
-                    <a asp-action="Generate" asp-route-studentId="@student.Id" class="btn btn-primary">
-                        Generate ID Card
-                    </a>
-                </td>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.FirstName @student.LastName</td>
+                    <td>@(student.Admissions?.FirstOrDefault()?.Class?.Name ?? "N/A")</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm generate-id-card"
+                                data-student-id="@student.Id">
+                            Generate ID Card
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.generate-id-card').click(function() {
+                var studentId = $(this).data('student-id');
+                var designTemplate = $('input[name="designTemplate"]:checked').val();
+
+                window.location.href = '/IdCard/Generate?studentId=' + studentId + '&design=' + designTemplate;
+            });
+        });
+    </script>
+}

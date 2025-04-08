@@ -14,13 +14,12 @@ public class IdCardController : Controller
         _context = context;
     }
 
-    public IActionResult Generate(int? studentId)
+    public IActionResult Generate(int? studentId, string design = "default")
     {
         if (studentId == null)
             return RedirectToAction("SelectStudent");
 
         var student = _context.Students.FirstOrDefault(s => s.Id == studentId);
-
         if (student == null)
             return NotFound("Student not found.");
 
@@ -28,7 +27,9 @@ public class IdCardController : Controller
         if (school == null)
             return NotFound("School information not found.");
 
-        var pdfBytes = _idCardService.GenerateIdCard(student, school);
+        var cardDesign = GetCardDesign(design);
+
+        var pdfBytes = _idCardService.GenerateIdCard(student, school, cardDesign);
         var base64Pdf = Convert.ToBase64String(pdfBytes);
 
         var model = new IdCardViewModel
@@ -41,10 +42,9 @@ public class IdCardController : Controller
     }
 
 
-    public IActionResult Download(int studentId)
+    public IActionResult Download(int studentId, string design = "default")
     {
         var student = _context.Students.FirstOrDefault(s => s.Id == studentId);
-
         if (student == null)
             return NotFound("Student not found.");
 
@@ -52,7 +52,9 @@ public class IdCardController : Controller
         if (school == null)
             return NotFound("School information not found.");
 
-        var pdfBytes = _idCardService.GenerateIdCard(student, school);
+        var cardDesign = GetCardDesign(design);
+
+        var pdfBytes = _idCardService.GenerateIdCard(student, school, cardDesign);
         return File(pdfBytes, "application/pdf", $"Student_{studentId}_IDCard.pdf");
     }
 
@@ -60,5 +62,18 @@ public class IdCardController : Controller
     {
         var students = _context.Students.ToList();
         return View(students);
+    }
+
+
+    private IdCardService.IdCardDesign GetCardDesign(string design)
+    {
+        return design?.ToLower() switch
+        {
+            "template2" => IdCardService.IdCardDesign.Template2,
+            "template3" => IdCardService.IdCardDesign.Template3,
+            "template4" => IdCardService.IdCardDesign.Template4,
+            "template5" => IdCardService.IdCardDesign.Template5,
+            _ => IdCardService.IdCardDesign.Default
+        };
     }
 }

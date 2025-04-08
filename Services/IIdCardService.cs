@@ -4,6 +4,6 @@ namespace REPLSolutions_IDGenerator.Services
 {
     public interface IIdCardService
     {
-        byte[] GenerateIdCard(Student student, School school);
+        byte[] GenerateIdCard(Student student, School school, IdCardService.IdCardDesign design = IdCardService.IdCardDesign.Default);
     }
 }
