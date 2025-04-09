@@ -62,7 +62,7 @@ public class IdCardService : IIdCardService
                     {
                         row.AutoItem().Height(35).PaddingLeft(4).Image("wwwroot/images/logo.png").FitArea();
 
-                        row.RelativeItem().AlignMiddle().Column(column =>
+                        row.AutoItem().AlignMiddle().Column(column =>
                         {
                             column.Item().Text(school.Name)
                                 .FontSize(10)
@@ -199,7 +199,7 @@ public class IdCardService : IIdCardService
 
                 page.Header().AlignCenter().AlignMiddle().Column(headerCol =>
                 {
-                    headerCol.Item().PaddingHorizontal(10).PaddingTop(20).Row(row =>
+                    headerCol.Item().PaddingHorizontal(15).PaddingTop(20).Row(row =>
                     {
                         row.AutoItem().Width(28).Height(28)
                             .Image("wwwroot/images/template2_logo.png").FitArea();
@@ -388,7 +388,7 @@ public class IdCardService : IIdCardService
                                 }
                             });
 
-                            row.AutoItem().AlignMiddle().PaddingLeft(5).Width(60).Height(60).Svg(GenerateQrCode(
+                            row.AutoItem().AlignMiddle().PaddingLeft(5).Width(65).Height(65).Svg(GenerateQrCode(
                                 $"Name: {student.FirstName ?? "N/A"} {student.LastName ?? "N/A"}, " +
                                 $"Guardian: {guardianName}, " +
                                 $"Phone: {guardianPhone}, " +
@@ -407,7 +407,7 @@ public class IdCardService : IIdCardService
                             .Bold()
                             .FontColor(blueColor);
 
-                        col.Item().PaddingTop(5).Table(table =>
+                        col.Item().PaddingTop(3).Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -430,7 +430,7 @@ public class IdCardService : IIdCardService
                             AddRow("Contact No.", guardianPhone);
                         });
 
-                        col.Item().PaddingVertical(5).AlignCenter().Text($"VALID UP TO : {cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A"}")
+                        col.Item().PaddingTop(4).AlignCenter().Text($"VALID UP TO : {cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A"}")
                             .FontSize(6)
                             .Bold()
                             .FontColor(redColor);
@@ -526,7 +526,7 @@ public class IdCardService : IIdCardService
                     col.Item().PaddingTop(2).AlignCenter().Text($"{student.FirstName} {student.LastName}")
                         .FontSize(10).Bold().FontColor(darkBlue);
 
-                    col.Item().PaddingTop(2).Table(table =>
+                    col.Item().PaddingTop(3).Table(table =>
                     {
                         table.ColumnsDefinition(columns =>
                         {
@@ -644,9 +644,9 @@ public class IdCardService : IIdCardService
                             });
                         });
 
-                        row.AutoItem().Height(60).Svg(GenerateQrCode(
+                        row.AutoItem().Height(60).Width(60).Svg(GenerateQrCode(
                             $"Name: {student.FirstName} {student.LastName}, " +
-                            $"Contact: {guardianPhone}"
+                            $"Contact: {guardianPhone}, Address: {address}"
                         ));
                     });
 
@@ -719,12 +719,12 @@ public class IdCardService : IIdCardService
                 page.DefaultTextStyle(x => x.FontSize(8));
                 page.Background().Image("wwwroot/images/template6_bg.png", ImageScaling.FitArea);
 
-                page.Content().Padding(0).Column(col =>
+                page.Content().Column(col =>
                 {
-                    col.Item().PaddingTop(10).PaddingLeft(8).AlignCenter().Row(row =>
+                    col.Item().PaddingTop(10).PaddingLeft(23).AlignCenter().Row(row =>
                     {
                         row.AutoItem().Width(28).Height(28)
-                            .Image("wwwroot/images/logo.png").FitArea(); // 👈 your logo
+                            .Image("wwwroot/images/logo.png").FitArea();
 
                         row.RelativeItem().PaddingLeft(3).Column(top =>
                         {
@@ -779,13 +779,13 @@ public class IdCardService : IIdCardService
                     col.Item().AlignCenter().PaddingTop(4).Text($"{student.FirstName} {student.LastName}")
                         .FontSize(10).Bold().FontColor(Colors.Green.Darken2);
 
-                    col.Item().PaddingHorizontal(10).PaddingTop(5).Table(table =>
+                    col.Item().PaddingLeft(23).PaddingTop(5).Table(table =>
                     {
                         table.ColumnsDefinition(cols =>
                         {
                             cols.RelativeColumn(3);
-                            cols.ConstantColumn(5);
-                            cols.RelativeColumn(5);
+                            cols.ConstantColumn(6);
+                            cols.RelativeColumn(6);
                         });
 
                         void Row(string label, string value, string color)
