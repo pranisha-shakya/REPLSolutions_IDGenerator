@@ -14,7 +14,8 @@ public class IdCardService : IIdCardService
         Template2,
         Template3,
         Template4,
-        Template5
+        Template5,
+        Template6
     }
 
     public byte[] GenerateIdCard(Student student, School school, IdCardDesign design = IdCardDesign.Default)
@@ -29,6 +30,8 @@ public class IdCardService : IIdCardService
                 return GenerateTemplate4(student, school);
             case IdCardDesign.Template5:
                 return GenerateTemplate5(student, school);
+            case IdCardDesign.Template6:
+                return GenerateTemplate6(student, school);
             default:
                 return GenerateDefaultTemplate(student, school);
         }
@@ -450,6 +453,7 @@ public class IdCardService : IIdCardService
             });
         }).GeneratePdf();
     }
+
     private byte[] GenerateTemplate4(Student student, School school)
     {
         string darkBlue = "#003366";
@@ -697,6 +701,111 @@ public class IdCardService : IIdCardService
             });
         }).GeneratePdf();
     }
+
+    private byte[] GenerateTemplate6(Student student, School school)
+    {
+        var admission = student.Admissions.FirstOrDefault();
+        string guardianName = student.Guardians.FirstOrDefault()?.Name ?? "N/A";
+        string guardianPhone = student.Guardians.FirstOrDefault()?.Phone ?? "N/A";
+        string address = student.Guardians.FirstOrDefault()?.Address ?? "N/A";
+        DateTimeOffset? cardValidityDate = CalculateCardValidityDate(admission?.AdmissionDate);
+
+        return Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(55, 86, Unit.Millimetre);
+                page.Margin(0);
+                page.DefaultTextStyle(x => x.FontSize(8));
+                page.Background().Image("wwwroot/images/template6_bg.png", ImageScaling.FitArea);
+
+                page.Content().Padding(0).Column(col =>
+                {
+                    col.Item().PaddingTop(10).PaddingLeft(8).AlignCenter().Row(row =>
+                    {
+                        row.AutoItem().Width(28).Height(28)
+                            .Image("wwwroot/images/logo.png").FitArea(); // 👈 your logo
+
+                        row.RelativeItem().PaddingLeft(3).Column(top =>
+                        {
+                            top.Item().Text(school.Name)
+                                .FontSize(10).Bold().FontColor(Colors.Blue.Darken2);
+                            top.Item().Text(school.Address).FontSize(6).AlignLeft();
+                            top.Item().Text(school.PhonePrimary).FontSize(6).AlignLeft();
+                        });
+                    });
+
+                    col.Item().PaddingTop(4).ExtendHorizontal().Background(Colors.Green.Medium)
+                              .PaddingVertical(3).AlignCenter().Text("STUDENT ID CARD").FontColor(Colors.White).FontSize(9).Bold();
+
+                    col.Item().AlignCenter().PaddingTop(2).Text($"User ID : {student.Id}")
+                        .FontColor(Colors.Green.Darken2)
+                        .FontSize(7);
+
+                    col.Item().PaddingTop(4).Row(row =>
+                    {
+                        row.AutoItem().Width(60).Height(60).Svg(GenerateQrCode(
+                            $"Name: {student.FirstName} {student.LastName}, " +
+                            $"Phone: {guardianPhone}, Address: {address}"
+                        ));
+
+                        row.AutoItem().Width(60).Height(60).Element(container =>
+                        {
+                            if (student.Image != null)
+                            {
+                                container.Image(student.Image).FitArea();
+                            }
+                            else
+                            {
+                                container.Background(Colors.Grey.Lighten3)
+                                         .AlignCenter().AlignMiddle()
+                                         .Text("Photo")
+                                         .FontSize(6);
+                            }
+                        });
+
+                        row.AutoItem().AlignBottom().PaddingLeft(2).Column(signCol =>
+                        {
+                            signCol.Item().Text("Principal's Sign")
+                                .FontSize(5)
+                                .FontColor(Colors.Black)
+                                .AlignCenter();
+
+                            signCol.Item().Width(32).Height(1)
+                            .Background(Colors.Black);
+                        });
+                    });
+
+                    col.Item().AlignCenter().PaddingTop(4).Text($"{student.FirstName} {student.LastName}")
+                        .FontSize(10).Bold().FontColor(Colors.Green.Darken2);
+
+                    col.Item().PaddingHorizontal(10).PaddingTop(5).Table(table =>
+                    {
+                        table.ColumnsDefinition(cols =>
+                        {
+                            cols.RelativeColumn(3);
+                            cols.ConstantColumn(5);
+                            cols.RelativeColumn(5);
+                        });
+
+                        void Row(string label, string value, string color)
+                        {
+                            table.Cell().Text(label).FontColor(color).Bold();
+                            table.Cell().Text(":");
+                            table.Cell().Text(value);
+                        }
+
+                        Row("Class", admission?.Class.Name ?? "N/A", Colors.Blue.Darken2);
+                        Row("Guardian", guardianName, Colors.Blue.Darken2);
+                        Row("Contact", guardianPhone, Colors.Blue.Darken2);
+                        Row("Address", address, Colors.Blue.Darken2);
+                        Row("Validity", cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A", Colors.Blue.Darken2);
+                    });
+                });
+            });
+        }).GeneratePdf();
+    }
+
     private DateTimeOffset? CalculateCardValidityDate(DateTimeOffset? admissionDate)
     {
         if (admissionDate == null)

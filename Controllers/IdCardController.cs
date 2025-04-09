@@ -73,6 +73,7 @@ public class IdCardController : Controller
             "template3" => IdCardService.IdCardDesign.Template3,
             "template4" => IdCardService.IdCardDesign.Template4,
             "template5" => IdCardService.IdCardDesign.Template5,
+            "template6" => IdCardService.IdCardDesign.Template6,
             _ => IdCardService.IdCardDesign.Default
         };
     }
