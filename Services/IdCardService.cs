@@ -195,7 +195,7 @@ public class IdCardService : IIdCardService
                 page.Margin(2);
                 page.DefaultTextStyle(x => x.FontSize(8));
 
-                page.Background().Image("wwwroot/images/template2_bg.png", ImageScaling.FitArea);
+                page.Background().Image("wwwroot/images/template2_bg.png").FitArea();
 
                 page.Header().AlignCenter().AlignMiddle().Column(headerCol =>
                 {
@@ -472,7 +472,7 @@ public class IdCardService : IIdCardService
                 page.Margin(0);
                 page.DefaultTextStyle(x => x.FontSize(7));
 
-                page.Background().Image("wwwroot/images/template4_bg.png", ImageScaling.FitWidth);
+                page.Background().Image("wwwroot/images/template4_bg.png").FitWidth();
 
                 page.Header().Padding(4).Column(header =>
                 {
@@ -581,7 +581,7 @@ public class IdCardService : IIdCardService
                 page.Margin(0);
                 page.DefaultTextStyle(x => x.FontSize(7));
 
-                page.Background().Image("wwwroot/images/template5_bg.png", ImageScaling.FitWidth);
+                page.Background().Image("wwwroot/images/template5_bg.png").FitWidth();
 
                 page.Header().PaddingTop(7).Column(header =>
                 {
@@ -717,7 +717,7 @@ public class IdCardService : IIdCardService
                 page.Size(55, 86, Unit.Millimetre);
                 page.Margin(0);
                 page.DefaultTextStyle(x => x.FontSize(8));
-                page.Background().Image("wwwroot/images/template6_bg.png", ImageScaling.FitArea);
+                page.Background().Image("wwwroot/images/template6_bg.png").FitArea();
 
                 page.Content().Column(col =>
                 {
@@ -801,6 +801,58 @@ public class IdCardService : IIdCardService
                         Row("Address", address, Colors.Blue.Darken2);
                         Row("Validity", cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A", Colors.Blue.Darken2);
                     });
+                });
+            });
+        }).GeneratePdf();
+    }
+
+    public byte[] GenerateLanyardDesign(School school)
+    {
+
+        return Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(22.8f, 863.6f, Unit.Millimetre);
+                page.MarginHorizontal(1.4f, Unit.Millimetre);
+                page.MarginVertical(50.8f, Unit.Millimetre);
+                page.Background().Image("wwwroot/images/lanyard-background.png").FitHeight();
+
+                page.Header().PaddingVertical(10).PaddingHorizontal(2, Unit.Millimetre).Column(column =>
+                {
+                    column.Item().FlipOver().PaddingHorizontal(2).PaddingVertical(10).Height(13, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
+                    column.Item().AlignCenter().Column(column =>
+                    {
+                        string schoolName = "REPL ENGLISH SCHOOL";
+                        foreach (char letter in schoolName.Reverse())
+                        {
+                            column.Item().FlipOver().AlignCenter().Text($"{letter}")
+                                .FontColor(Colors.White).FontSize(15).Bold();
+                        }
+                    });
+                    column.Item().FlipOver().PaddingHorizontal(2).PaddingVertical(10).Height(13, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
+                });
+
+                page.Content().AlignCenter().AlignMiddle().PaddingVertical(10).PaddingHorizontal(2, Unit.Millimetre).Column(column =>
+                {
+                    column.Item().RotateRight().AlignCenter().PaddingHorizontal(2).Height(15, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
+                    column.Item().RotateRight().AlignCenter().AlignMiddle().Text("REPL ENGLISH SCHOOL").FontColor(Colors.White).FontSize(15).Bold();
+                    column.Item().RotateRight().AlignCenter().PaddingHorizontal(2).Height(15, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
+                });
+
+                page.Footer().PaddingVertical(10).PaddingHorizontal(2, Unit.Millimetre).Column(column =>
+                {
+                    column.Item().PaddingHorizontal(2).PaddingVertical(10).Height(13, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
+                    column.Item().AlignCenter().Column(column =>
+                    {
+                        string schoolName = "REPL ENGLISH SCHOOL";
+                        foreach (char letter in schoolName)
+                        {
+                            column.Item().AlignCenter().Text($"{letter}")
+                                .FontColor(Colors.White).FontSize(15).Bold();
+                        }
+                    });
+                    column.Item().PaddingHorizontal(2).PaddingVertical(10).Height(13, Unit.Millimetre).AlignCenter().Image("wwwroot/images/logo.png").FitHeight();
                 });
             });
         }).GeneratePdf();

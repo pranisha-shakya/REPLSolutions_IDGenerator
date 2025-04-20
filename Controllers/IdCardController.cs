@@ -41,7 +41,6 @@ public class IdCardController : Controller
         return View("IdCard", model);
     }
 
-
     public IActionResult Download(int studentId, string design = "default")
     {
         var student = _context.Students.FirstOrDefault(s => s.Id == studentId);
@@ -76,5 +75,25 @@ public class IdCardController : Controller
             "template6" => IdCardService.IdCardDesign.Template6,
             _ => IdCardService.IdCardDesign.Default
         };
+    }
+
+    public IActionResult GenerateLanyardDesign()
+    {
+        var school = _context.Schools.FirstOrDefault();
+        if (school == null)
+            return NotFound("School information not found.");
+
+        var pdf = _idCardService.GenerateLanyardDesign(school);
+        return File(pdf, "application/pdf");
+    }
+
+    public IActionResult DownloadLanyard()
+    {
+        var school = _context.Schools.FirstOrDefault();
+        if (school == null)
+            return NotFound("School information not found.");
+
+        var pdfBytes = _idCardService.GenerateLanyardDesign(school);
+        return File(pdfBytes, "application/pdf", $"{school.Name}_Lanyard.pdf");
     }
 }
