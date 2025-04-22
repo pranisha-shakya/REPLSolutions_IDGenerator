@@ -58,7 +58,7 @@ public class IdCardService : IIdCardService
 
                 page.Header().Column(headerCol =>
                 {
-                    headerCol.Item().PaddingVertical(1).Background(blueColor).Row(row =>
+                    headerCol.Item().Background(blueColor).Row(row =>
                     {
                         row.AutoItem().Height(35).Width(35).PaddingLeft(4).Image("wwwroot/images/logo.png").FitArea();
 
