@@ -56,7 +56,7 @@ public class IdCardService : IIdCardService
                 page.Margin(0);
                 page.DefaultTextStyle(x => x.FontSize(7));
 
-                page.Header().Column(headerCol =>
+                page.Header().ShowEntire().Column(headerCol =>
                 {
                     headerCol.Item().Background(blueColor).Row(row =>
                     {
@@ -64,13 +64,13 @@ public class IdCardService : IIdCardService
 
                         row.RelativeItem().AlignMiddle().Column(column =>
                         {
-                            column.Item().Text("REPL ENGLISH BOARDING SCHOOL")
+                            column.Item().ScaleToFit().Text("REPL ENGLISH BOARDING SCHOOL repl engklish english engishkbhs hyavadak uayuvudy abcdefghijkbiubua xiu absbfayvbau szuvuyabcuycas csyucaybr")
                                 .FontSize(9)
                                 .Bold()
                                 .FontColor(Colors.White)
                                 .AlignCenter();
 
-                            column.Item().Text(school.Address)
+                            column.Item().ScaleToFit().Text(school.Address)
                                 .FontSize(8)
                                 .FontColor(Colors.White)
                                 .AlignCenter();
@@ -78,12 +78,12 @@ public class IdCardService : IIdCardService
                     });
                 });
 
-                page.Content()
+                page.Content().ShowEntire()
                     .PaddingHorizontal(10)
                     .PaddingVertical(3)
                     .Column(col =>
                     {
-                        col.Item().AlignCenter().Background(blueColor).Padding(2).Element(container =>
+                        col.Item().ScaleToFit().AlignCenter().Background(blueColor).Padding(2).Element(container =>
                         {
                             container.AlignCenter().Text("STUDENT ID CARD")
                                 .FontSize(8)
@@ -126,12 +126,12 @@ public class IdCardService : IIdCardService
                         col.Item().AlignCenter().Row(row =>
                         {
                             row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
-                            row.ConstantItem(100).AlignCenter().Text(student.FirstName + " " + student.LastName)
+                            row.ConstantItem(100).ScaleToFit().AlignCenter().Text(student.FirstName + " " + student.LastName)
                             .FontSize(9).Bold().FontColor(Colors.Black);
                             row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
                         });
 
-                        col.Item().PaddingVertical(4).PaddingHorizontal(6).AlignCenter().Table(table =>
+                        col.Item().ScaleToFit().PaddingVertical(4).PaddingHorizontal(6).AlignCenter().Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -155,7 +155,7 @@ public class IdCardService : IIdCardService
                             AddRow("Validity", cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A");
                         });
 
-                        col.Item().AlignRight().Width(45).Height(10).Column(column =>
+                        col.Item().ScaleToFit().AlignRight().Width(45).Height(10).Column(column =>
                         {
                             column.Item().Text("Principal's Sign")
                                 .FontSize(5)
@@ -167,7 +167,7 @@ public class IdCardService : IIdCardService
                         });
                     });
 
-                page.Footer().Background(blueColor).Padding(3).AlignCenter()
+                page.Footer().ShowEntire().Background(blueColor).Padding(3).AlignCenter()
                     .Text(text =>
                     {
                         text.Span("OUR SCHOOL, OUR PRIDE")
