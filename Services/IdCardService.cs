@@ -69,13 +69,13 @@ public class IdCardService : IIdCardService
                                 .Bold()
                                 .FontColor(Colors.White)
                                 .AlignCenter()
-                                .ClampLines(1);
+                                .ClampLines(1, "");
 
                             column.Item().Text(school.Address)
                                 .FontSize(8)
                                 .FontColor(Colors.White)
                                 .AlignCenter()
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                         });
                     });
                 });
@@ -130,7 +130,7 @@ public class IdCardService : IIdCardService
                         {
                             row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
                             row.ConstantItem(100).AlignCenter().Text(student.FirstName + " " + student.LastName)
-                            .FontSize(9).Bold().FontColor(Colors.Black).ClampLines(1);
+                            .FontSize(9).Bold().FontColor(Colors.Black).ClampLines(1, "");
                             row.RelativeItem().AlignMiddle().Height(1).Background(tealColor);
                         });
 
@@ -145,16 +145,16 @@ public class IdCardService : IIdCardService
 
                             void AddRow(string label, string value)
                             {
-                                table.Cell().Text(label).Bold().ClampLines(1);
+                                table.Cell().Text(label).Bold().ClampLines(1, "");
                                 table.Cell().Text(":");
-                                table.Cell().Text(value).ClampLines(1);
+                                table.Cell().Text(value).ClampLines(1, "");
                             }
 
                             AddRow("Roll No", student.Admissions.FirstOrDefault()?.RollNumber ?? "N/A");
                             AddRow("Class", admission?.Class.Name ?? "N/A");
                             AddRow("Phone", guardianPhone ?? "N/A");
                             AddRow("Email", student.Email ?? "N/A");
-                            AddRow("DOB", student.DateOfBirth.ToString("dd MMM yyyy") ?? "N/A");
+                            AddRow("DOB", student.DateOfBirth.ToString("yyyy-MM-dd") ?? "N/A");
                             AddRow("Address", "Dadhikot, Bhaktapur, Nepal");
                             AddRow("Guardian", guardianName ?? "N/A");
                             AddRow("Validity", cardValidityDate?.ToString("yyyy-MM-dd") ?? "N/A");
@@ -175,7 +175,7 @@ public class IdCardService : IIdCardService
                 page.Footer().StopPaging().Background(blueColor).Padding(3).AlignCenter()
                     .Text(text =>
                     {
-                        text.ClampLines(1);
+                        text.ClampLines(1, "");
                         text.Span("OUR SCHOOL, OUR PRIDE")
                             .FontColor(Colors.White).FontSize(7).Italic();
                     });
@@ -217,17 +217,17 @@ public class IdCardService : IIdCardService
                                 .FontSize(8)
                                 .Bold()
                                 .FontColor(greenColor)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
 
                             column.Item().Text(school.Address)
                                .FontSize(6)
                                .FontColor(Colors.Grey.Darken2)
-                               .ClampLines(1);
+                               .ClampLines(1, "");
 
                             column.Item().Text(school.PhonePrimary)
                                 .FontSize(6)
                                 .FontColor(Colors.Grey.Darken2)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                         });
                     });
 
@@ -291,7 +291,7 @@ public class IdCardService : IIdCardService
                         .FontSize(10)
                         .Bold()
                         .FontColor(greenColor)
-                        .ClampLines(1);
+                        .ClampLines(1, "");
 
                     col.Item().PaddingVertical(6).PaddingHorizontal(15).Table(table =>
                     {
@@ -304,9 +304,9 @@ public class IdCardService : IIdCardService
 
                         void AddRow(string label, string value)
                         {
-                            table.Cell().Text(label).Bold().ClampLines(1);
+                            table.Cell().Text(label).Bold().ClampLines(1, "");
                             table.Cell().Text(":");
-                            table.Cell().Text(value).ClampLines(1);
+                            table.Cell().Text(value).ClampLines(1, "");
                         }
 
                         AddRow("Class", admission?.Class.Name ?? "N/A");
@@ -359,7 +359,7 @@ public class IdCardService : IIdCardService
                             .FontSize(9)
                             .Bold()
                             .FontColor(blueColor)
-                            .ClampLines(1);
+                            .ClampLines(1, "");
                     });
 
                     headerCol.Item().Background(orangeColor).Padding(2).Element(container =>
@@ -419,7 +419,7 @@ public class IdCardService : IIdCardService
                             .FontSize(9)
                             .Bold()
                             .FontColor(blueColor)
-                            .ClampLines(1);
+                            .ClampLines(1, "");
 
                         col.Item().PaddingTop(3).PaddingLeft(3).Table(table =>
                         {
@@ -432,9 +432,9 @@ public class IdCardService : IIdCardService
 
                             void AddRow(string label, string value)
                             {
-                                table.Cell().Text(label).Bold().ClampLines(1);
+                                table.Cell().Text(label).Bold().ClampLines(1, "");
                                 table.Cell().Text(":");
-                                table.Cell().Text(value).ClampLines(1);
+                                table.Cell().Text(value).ClampLines(1, "");
                             }
 
                             AddRow("DOB", student.DateOfBirth.ToString("yyyy-MM-dd") ?? "N/A");
@@ -449,7 +449,7 @@ public class IdCardService : IIdCardService
                             .FontSize(6)
                             .Bold()
                             .FontColor(redColor)
-                            .ClampLines(1);
+                            .ClampLines(1, "");
                     });
 
                 page.Footer().StopPaging().Element(footer =>
@@ -462,13 +462,13 @@ public class IdCardService : IIdCardService
                                 .FontSize(6)
                                 .AlignCenter()
                                 .FontColor(Colors.White)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
 
                             column.Item().PaddingBottom(1).Text(school.PhonePrimary)
                                 .FontSize(6)
                                 .AlignCenter()
                                 .FontColor(Colors.White)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                         });
                 });
             });
@@ -502,10 +502,10 @@ public class IdCardService : IIdCardService
                         row.AutoItem().PaddingLeft(5).Width(35).Height(30).Image("wwwroot/images/logo.png").FitArea();
                         row.RelativeItem().AlignCenter().Column(col =>
                         {
-                            col.Item().Text("REPL ENGLISH BOARDING SCHOOL").FontSize(9).Bold().FontColor(Colors.White).ClampLines(1);
-                            col.Item().Text(school.Address).FontSize(7).FontColor(Colors.White).ClampLines(1);
-                            col.Item().Text(school.PhonePrimary).FontSize(7).FontColor(Colors.White).ClampLines(1);
-                            col.Item().Text($"www.{school.Name.Replace(" ", "").ToLower()}.edu.np").FontColor(Colors.White).FontSize(6).ClampLines(1);
+                            col.Item().Text("REPL ENGLISH BOARDING SCHOOL").FontSize(9).Bold().FontColor(Colors.White).ClampLines(1, "");
+                            col.Item().Text(school.Address).FontSize(7).FontColor(Colors.White).ClampLines(1, "");
+                            col.Item().Text(school.PhonePrimary).FontSize(7).FontColor(Colors.White).ClampLines(1, "");
+                            col.Item().Text($"www.{school.Name.Replace(" ", "").ToLower()}.edu.np").FontColor(Colors.White).FontSize(6).ClampLines(1, "");
                         });
                     });
 
@@ -545,7 +545,7 @@ public class IdCardService : IIdCardService
                     });
 
                     col.Item().PaddingTop(2).AlignCenter().Text($"{student.FirstName} {student.LastName}")
-                        .FontSize(10).Bold().FontColor(darkBlue).ClampLines(1);
+                        .FontSize(10).Bold().FontColor(darkBlue).ClampLines(1, "");
 
                     col.Item().PaddingTop(3).Table(table =>
                     {
@@ -558,9 +558,9 @@ public class IdCardService : IIdCardService
 
                         void AddRow(string label, string value)
                         {
-                            table.Cell().Text(label).Bold().ClampLines(1);
+                            table.Cell().Text(label).Bold().ClampLines(1, "");
                             table.Cell().Text(":");
-                            table.Cell().Text(value).ClampLines(1);
+                            table.Cell().Text(value).ClampLines(1, "");
                         }
 
                         AddRow("Roll No", admission?.RollNumber ?? "N/A");
@@ -579,7 +579,7 @@ public class IdCardService : IIdCardService
 
                 page.Footer().StopPaging().Padding(2).AlignCenter().Text(text =>
                 {
-                    text.ClampLines(1);
+                    text.ClampLines(1, "");
                     text.Line("If found, please return to the school").FontColor(Colors.White).FontSize(6);
                 });
             });
@@ -617,13 +617,13 @@ public class IdCardService : IIdCardService
                             col.Item().Text("REPL ENGLISH BOARDING SCHOOL")
                                 .FontSize(9)
                                 .Bold()
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                             col.Item().Text(school.Address)
                                 .FontSize(7)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                             col.Item().Text(school.PhonePrimary)
                                 .FontSize(7)
-                                .ClampLines(1);
+                                .ClampLines(1, "");
                         });
                     });
                 });
@@ -676,7 +676,7 @@ public class IdCardService : IIdCardService
                         .FontSize(10)
                         .Bold()
                         .FontColor(redColor)
-                        .ClampLines(1);
+                        .ClampLines(1, "");
 
                     content.Item().PaddingTop(3).PaddingLeft(20).Column(col =>
                     {
@@ -691,9 +691,9 @@ public class IdCardService : IIdCardService
 
                             void AddRow(string label, string value)
                             {
-                                table.Cell().Text(label).Bold().ClampLines(1);
+                                table.Cell().Text(label).Bold().ClampLines(1, "");
                                 table.Cell().Text(":");
-                                table.Cell().Text(value).ClampLines(1);
+                                table.Cell().Text(value).ClampLines(1, "");
                             }
 
                             AddRow("Class", admission?.Class.Name ?? "N/A");
@@ -722,7 +722,7 @@ public class IdCardService : IIdCardService
                     .FontSize(7)
                     .Bold()
                     .FontColor(Colors.White)
-                    .ClampLines(1);
+                    .ClampLines(1, "");
             });
         }).GeneratePdf();
     }
@@ -754,9 +754,9 @@ public class IdCardService : IIdCardService
                         row.RelativeItem().Column(top =>
                         {
                             top.Item().Text("REPL ENGLISH BOARDING SCHOOL")
-                                .FontSize(9).Bold().FontColor(Colors.Blue.Darken2).ClampLines(1);
-                            top.Item().Text(school.Address).FontSize(6).AlignLeft().ClampLines(1);
-                            top.Item().Text(school.PhonePrimary).FontSize(6).AlignLeft().ClampLines(1);
+                                .FontSize(9).Bold().FontColor(Colors.Blue.Darken2).ClampLines(1, "");
+                            top.Item().Text(school.Address).FontSize(6).AlignLeft().ClampLines(1, "");
+                            top.Item().Text(school.PhonePrimary).FontSize(6).AlignLeft().ClampLines(1, "");
                         });
                     });
 
@@ -802,7 +802,7 @@ public class IdCardService : IIdCardService
                     });
 
                     col.Item().AlignCenter().PaddingTop(4).Text($"{student.FirstName} {student.LastName}")
-                        .FontSize(10).Bold().FontColor(Colors.Green.Darken2).ClampLines(1);
+                        .FontSize(10).Bold().FontColor(Colors.Green.Darken2).ClampLines(1, "");
 
                     col.Item().PaddingLeft(23).PaddingTop(5).Table(table =>
                     {
@@ -815,9 +815,9 @@ public class IdCardService : IIdCardService
 
                         void Row(string label, string value, string color)
                         {
-                            table.Cell().Text(label).FontColor(color).Bold().ClampLines(1);
+                            table.Cell().Text(label).FontColor(color).Bold().ClampLines(1, "");
                             table.Cell().Text(":");
-                            table.Cell().Text(value).ClampLines(1);
+                            table.Cell().Text(value).ClampLines(1, "");
                         }
 
                         Row("Class", admission?.Class.Name ?? "N/A", Colors.Blue.Darken2);
